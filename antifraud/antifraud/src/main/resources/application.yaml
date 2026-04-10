@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: antifraud
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        min.insync.replicas: 1
+        spring.json.add.type.headers: true
+    consumer:
+      group-id: "antifraud-group"
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.default.type: "templario01.io.antifraud.adapter.input.event.dto.TransactionEventInbound"
+        spring.json.trusted.packages: "*"
+        topic-name: "payment.transaction"
+    properties:
+      security.protocol: PLAINTEXT
+app:
+  kafka:
+    transfer-topic: "payment.transaction.status"
+server:
+  error:
+    include-stacktrace: never
