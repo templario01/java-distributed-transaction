@@ -19,8 +19,8 @@ public class ValidateSuspiciousTransactionUseCase {
 
     public Mono<Void> execute(TransactionEventInbound transactionEvent) {
         TransactionEventOutbound transactionEventOutbound = TransactionEventOutbound.builder()
-                .transaction_external_id(transactionEvent.getTransaction_external_id())
-                .transaction_status(transactionEvent.getValue() > MAX_AMOUNT_PER_TRANSACTION
+                .transactionExternalId(transactionEvent.getTransactionExternalId())
+                .transactionStatus(transactionEvent.getValue() > MAX_AMOUNT_PER_TRANSACTION
                         ? TransactionStatusEnum.REJECTED
                         : TransactionStatusEnum.APPROVED)
                 .build();

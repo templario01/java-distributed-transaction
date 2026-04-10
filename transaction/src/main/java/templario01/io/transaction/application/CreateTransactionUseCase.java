@@ -26,19 +26,19 @@ public class CreateTransactionUseCase {
     @Transactional
     public Mono<TransactionResponseDto> execute(TransactionRequestDto transactionRequestDto) {
         TransactionEntity transaction = TransactionEntity.builder()
-                .transaction_external_id(UUID.randomUUID())
-                .created_at(java.time.LocalDateTime.now())
-                .account_external_id_debit(transactionRequestDto.getAccountExternalIdDebit())
-                .account_external_id_credit(transactionRequestDto.getAccountExternalIdCredit())
-                .transaction_status(TransactionStatusEnum.PENDING)
-                .transfer_type_id(transactionRequestDto.getTransferTypeId())
+                .transactionExternalId(UUID.randomUUID())
+                .createdAt(java.time.LocalDateTime.now())
+                .accountExternalIdDebit(transactionRequestDto.getAccountExternalIdDebit())
+                .accountExternalIdCredit(transactionRequestDto.getAccountExternalIdCredit())
+                .transactionStatus(TransactionStatusEnum.PENDING)
+                .transferTypeId(transactionRequestDto.getTransferTypeId())
                 .value(transactionRequestDto.getValue())
                 .build();
 
         log.info("Creating transaction: {}", transaction);
 
         return this.transactionRepository.save(transaction)
-                .doOnSuccess(saved -> log.info("Transaction saved: {}", saved.getTransaction_external_id()))
+                .doOnSuccess(saved -> log.info("Transaction saved: {}", saved.getTransactionExternalId()))
                 .flatMap(savedTransaction ->
                         kafkaProducer.sendMessage(savedTransaction, "payment.transaction")
                                 .thenReturn(savedTransaction)
@@ -50,13 +50,13 @@ public class CreateTransactionUseCase {
     private TransactionResponseDto mapToResponseDto(TransactionEntity savedTransaction) {
         return TransactionResponseDto.builder()
                 .id(savedTransaction.getId())
-                .transactionExternalId(savedTransaction.getTransaction_external_id())
-                .accountExternalIdDebit(savedTransaction.getAccount_external_id_debit())
-                .accountExternalIdCredit(savedTransaction.getAccount_external_id_credit())
-                .transactionStatus(savedTransaction.getTransaction_status())
-                .transferTypeId(savedTransaction.getTransfer_type_id())
+                .transactionExternalId(savedTransaction.getTransactionExternalId())
+                .accountExternalIdDebit(savedTransaction.getAccountExternalIdDebit())
+                .accountExternalIdCredit(savedTransaction.getAccountExternalIdCredit())
+                .transactionStatus(savedTransaction.getTransactionStatus())
+                .transferTypeId(savedTransaction.getTransferTypeId())
                 .value(savedTransaction.getValue())
-                .createdAt(savedTransaction.getCreated_at())
+                .createdAt(savedTransaction.getCreatedAt())
                 .build();
     }
 }

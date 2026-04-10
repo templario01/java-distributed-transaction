@@ -9,7 +9,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         min.insync.replicas: 1
-        spring.json.add.type.headers: true
+        spring.json.add.type.headers: false
     consumer:
       group-id: "antifraud-group"
       auto-offset-reset: earliest

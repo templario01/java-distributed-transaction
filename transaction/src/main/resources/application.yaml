@@ -18,7 +18,15 @@ spring:
       properties:
         spring.json.add.type.headers: false
         min.insync.replicas: 1
-
+    consumer:
+      group-id: "transaction-group"
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.default.type: "templario01.io.transaction.adapter.input.event.dto.ValidatedTransactionEventInbound"
+        spring.json.trusted.packages: "*"
+        topic-name: "payment.transaction.status"
     properties:
       security.protocol: PLAINTEXT
 

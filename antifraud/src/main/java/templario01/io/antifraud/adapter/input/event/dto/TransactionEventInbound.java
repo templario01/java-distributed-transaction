@@ -12,16 +12,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class TransactionEventInbound {
 
-    private UUID transaction_external_id;
+    private UUID transactionExternalId;
 
-    private String account_external_id_debit;
+    private String accountExternalIdDebit;
 
-    private String account_external_id_credit;
+    private String accountExternalIdCredit;
 
-    private Integer transfer_type_id;
+    private Integer transferTypeId;
 
     private Double value;
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
 }

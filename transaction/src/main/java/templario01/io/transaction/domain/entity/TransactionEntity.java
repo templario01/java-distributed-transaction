@@ -20,24 +20,24 @@ public class TransactionEntity {
     private Long id;
 
     @Column("transaction_external_id")
-    private UUID transaction_external_id;
+    private UUID transactionExternalId;
 
     @Column("account_external_id_debit")
-    private String account_external_id_debit;
+    private String accountExternalIdDebit;
 
     @Column("account_external_id_credit")
-    private String account_external_id_credit;
+    private String accountExternalIdCredit;
 
     @Column("transaction_status")
-    private TransactionStatusEnum transaction_status;
+    private TransactionStatusEnum transactionStatus;
 
     @Column("transfer_type_id")
-    private Integer transfer_type_id;
+    private Integer transferTypeId;
 
     @Column("value")
     private Double value;
 
     @Column("created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
 }

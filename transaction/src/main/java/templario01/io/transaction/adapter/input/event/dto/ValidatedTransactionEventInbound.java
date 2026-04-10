@@ -1,9 +1,10 @@
-package templario01.io.antifraud.adapter.input.event.dto;
+package templario01.io.transaction.adapter.input.event.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import templario01.io.transaction.domain.entity.TransactionStatusEnum;
 
 import java.util.UUID;
 
@@ -11,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TransactionEventOutbound {
+public class ValidatedTransactionEventInbound {
     private UUID transactionExternalId;
 
     private TransactionStatusEnum transactionStatus;
