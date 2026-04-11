@@ -1,3 +1,22 @@
+server:
+  port: 8020
 spring:
   application:
     name: gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: transaction
+              uri: http://localhost:3000
+              predicates:
+                - Path=/ms-transaction/v1/**
+                - Method=GET, POST
+              filters:
+                - AddRequestHeader=X-Request-ID, ${random.uuid}
+logging:
+  level:
+    org.springframework.cloud: DEBUG
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway.route.RouteDefinitionRouteLocator: DEBUG

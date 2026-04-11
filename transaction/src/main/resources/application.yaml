@@ -1,4 +1,6 @@
 spring:
+  webflux:
+    base-path: /ms-transaction/v1
   application:
     name: transaction
   r2dbc:

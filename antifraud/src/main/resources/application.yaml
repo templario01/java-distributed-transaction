@@ -1,4 +1,6 @@
 spring:
+  webflux:
+    base-path: /ms-antifraud/v1
   application:
     name: antifraud
   kafka:
