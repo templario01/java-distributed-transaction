@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import templario01.io.transaction.adapter.input.web.dto.TransactionResponseDto;
+import templario01.io.transaction.domain.entity.EntityNotFoundException;
 import templario01.io.transaction.domain.entity.TransactionEntity;
 import templario01.io.transaction.domain.repository.TransactionRepository;
 
@@ -20,6 +21,7 @@ public class FindTransactionUseCase {
 
     public Mono<TransactionResponseDto> execute(UUID transactionExternalId) {
         return transactionRepository.findByTransactionExternalId(transactionExternalId)
+                .switchIfEmpty(Mono.error(new EntityNotFoundException()))
                 .map(this::mapToResponseDto)
                 .doOnError(error -> log.error("Error on get transaction", error));
 

@@ -1,18 +1,16 @@
 package templario01.io.transaction.adapter.input.web;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import templario01.io.transaction.adapter.input.web.dto.TransactionRequestDto;
 import templario01.io.transaction.adapter.input.web.dto.TransactionResponseDto;
 import templario01.io.transaction.application.CreateTransactionUseCase;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import templario01.io.transaction.application.FindTransactionUseCase;
-import templario01.io.transaction.domain.repository.TransactionRepository;
 
 @RestController
 @RequestMapping("/transaction")
@@ -29,21 +27,13 @@ public class TransactionController {
     @GetMapping("/{transactionExternalId}")
     public Mono<ResponseEntity<TransactionResponseDto>> getTransaction(@PathVariable() String transactionExternalId) {
         return this.findTransactionUseCase.execute(java.util.UUID.fromString(transactionExternalId))
-                .map(response -> ResponseEntity.status(HttpStatus.OK).body(response))
-                .onErrorResume(error -> {
-                    log.error("Error during transaction find", error);
-                    return Mono.just(ResponseEntity.internalServerError().build());
-                });
+                .map(response -> ResponseEntity.status(HttpStatus.OK).body(response));
     }
 
     @PostMapping
     public Mono<ResponseEntity<TransactionResponseDto>> createTransfer(@Valid @RequestBody TransactionRequestDto request) {
         return this.createTransactionUseCase.execute(request)
-                .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response))
-                .onErrorResume(error -> {
-                    log.error("Error during transaction creation", error);
-                    return Mono.just(ResponseEntity.internalServerError().build());
-                });
+                .map(response -> ResponseEntity.status(HttpStatus.CREATED).body(response));
     }
 
 }
