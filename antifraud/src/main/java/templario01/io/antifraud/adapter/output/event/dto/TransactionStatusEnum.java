@@ -1,4 +1,4 @@
-package templario01.io.antifraud.adapter.input.event.dto;
+package templario01.io.antifraud.adapter.output.event.dto;
 
 public enum TransactionStatusEnum {
     APPROVED,

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import templario01.io.transaction.adapter.input.event.dto.ValidatedTransactionEventInbound;
-import templario01.io.transaction.domain.port.TransactionRepository;
+import templario01.io.transaction.domain.repository.TransactionRepository;
 
 @RequiredArgsConstructor
 @Service

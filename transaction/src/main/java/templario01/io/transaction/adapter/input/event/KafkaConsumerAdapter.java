@@ -7,15 +7,16 @@ import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
 import templario01.io.transaction.adapter.input.event.dto.ValidatedTransactionEventInbound;
 import templario01.io.transaction.application.UpdateValidatedTransactionUseCase;
+import templario01.io.transaction.domain.repository.EventBrokerConsumerRepository;
 
 @Service
-public class TransactionConsumer {
-    private static final Logger log = LoggerFactory.getLogger(TransactionConsumer.class);
+public class KafkaConsumerAdapter implements EventBrokerConsumerRepository {
+    private static final Logger log = LoggerFactory.getLogger(KafkaConsumerAdapter.class);
 
     private final ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate;
     private final UpdateValidatedTransactionUseCase updateValidatedTransactionUseCase;
 
-    public TransactionConsumer(ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate, UpdateValidatedTransactionUseCase updateValidatedTransactionUseCase) {
+    public KafkaConsumerAdapter(ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate, UpdateValidatedTransactionUseCase updateValidatedTransactionUseCase) {
         this.kafkaTemplate = kafkaTemplate;
         this.updateValidatedTransactionUseCase = updateValidatedTransactionUseCase;
     }

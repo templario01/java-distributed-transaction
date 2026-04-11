@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import templario01.io.transaction.adapter.input.web.dto.TransactionRequestDto;
 import templario01.io.transaction.adapter.input.web.dto.TransactionResponseDto;
-import templario01.io.transaction.application.services.KafkaProducer;
 import templario01.io.transaction.domain.entity.TransactionEntity;
 import templario01.io.transaction.domain.entity.TransactionStatusEnum;
-import templario01.io.transaction.domain.port.TransactionRepository;
+import templario01.io.transaction.domain.repository.EventBrokerProducerRepository;
+import templario01.io.transaction.domain.repository.TransactionRepository;
 
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ public class CreateTransactionUseCase {
     private static final Logger log = LoggerFactory.getLogger(CreateTransactionUseCase.class);
 
     private final TransactionRepository transactionRepository;
-    private final KafkaProducer kafkaProducer; // Inyectamos el adapter de infraestructura
+    private final EventBrokerProducerRepository eventBrokerProducerRepository; // Inyectamos el adapter de infraestructura
 
     @Transactional
     public Mono<TransactionResponseDto> execute(TransactionRequestDto transactionRequestDto) {
@@ -40,7 +40,7 @@ public class CreateTransactionUseCase {
         return this.transactionRepository.save(transaction)
                 .doOnSuccess(saved -> log.info("Transaction saved: {}", saved.getTransactionExternalId()))
                 .flatMap(savedTransaction ->
-                        kafkaProducer.sendMessage(savedTransaction, "payment.transaction")
+                        eventBrokerProducerRepository.sendMessage(savedTransaction, "payment.transaction")
                                 .thenReturn(savedTransaction)
                 )
                 .map(this::mapToResponseDto)

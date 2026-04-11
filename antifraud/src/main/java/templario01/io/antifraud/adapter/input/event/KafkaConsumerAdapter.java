@@ -7,16 +7,17 @@ import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate;
 import org.springframework.stereotype.Service;
 import templario01.io.antifraud.adapter.input.event.dto.TransactionEventInbound;
 import templario01.io.antifraud.application.ValidateSuspiciousTransactionUseCase;
+import templario01.io.antifraud.domain.repository.EventBrokerConsumerRepository;
 
 
 @Service
-public class TransactionConsumer {
-    private static final Logger log = LoggerFactory.getLogger(TransactionConsumer.class);
+public class KafkaConsumerAdapter implements EventBrokerConsumerRepository {
+    private static final Logger log = LoggerFactory.getLogger(KafkaConsumerAdapter.class);
 
     private final ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate;
     private final ValidateSuspiciousTransactionUseCase validateSuspiciousTransactionUseCase;
 
-    public TransactionConsumer(ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate, ValidateSuspiciousTransactionUseCase validateSuspiciousTransactionUseCase) {
+    public KafkaConsumerAdapter(ReactiveKafkaConsumerTemplate<String, Object> kafkaTemplate, ValidateSuspiciousTransactionUseCase validateSuspiciousTransactionUseCase) {
         this.kafkaTemplate = kafkaTemplate;
         this.validateSuspiciousTransactionUseCase = validateSuspiciousTransactionUseCase;
     }

@@ -1,19 +1,20 @@
-package templario01.io.transaction.application.services;
+package templario01.io.transaction.adapter.output.event;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import templario01.io.transaction.domain.repository.EventBrokerProducerRepository;
 
 import java.util.UUID;
 
 @Service
-public class KafkaProducer {
-    private static final Logger log = LoggerFactory.getLogger(KafkaProducer.class);
+public class KafkaProducerAdapter implements EventBrokerProducerRepository {
+    private static final Logger log = LoggerFactory.getLogger(KafkaProducerAdapter.class);
     private final ReactiveKafkaProducerTemplate<String, Object> kafkaTemplate;
 
-    public KafkaProducer(
+    public KafkaProducerAdapter(
             ReactiveKafkaProducerTemplate<String, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }

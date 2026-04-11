@@ -6,16 +6,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import templario01.io.antifraud.adapter.input.event.dto.TransactionEventInbound;
-import templario01.io.antifraud.adapter.input.event.dto.TransactionEventOutbound;
-import templario01.io.antifraud.adapter.input.event.dto.TransactionStatusEnum;
-import templario01.io.antifraud.application.service.KafkaProducer;
+import templario01.io.antifraud.adapter.output.event.dto.TransactionEventOutbound;
+import templario01.io.antifraud.adapter.output.event.dto.TransactionStatusEnum;
+import templario01.io.antifraud.adapter.output.event.KafkaProducerAdapter;
+import templario01.io.antifraud.domain.repository.EventBrokerProducerRepository;
 
 @RequiredArgsConstructor
 @Service
 public class ValidateSuspiciousTransactionUseCase {
     private static final double MAX_AMOUNT_PER_TRANSACTION = 1000;
     private static final Logger log = LoggerFactory.getLogger(ValidateSuspiciousTransactionUseCase.class);
-    private final KafkaProducer kafkaProducer;
+    private final EventBrokerProducerRepository eventBrokerProducerRepository;
 
     public Mono<Void> execute(TransactionEventInbound transactionEvent) {
         TransactionEventOutbound transactionEventOutbound = TransactionEventOutbound.builder()
@@ -25,7 +26,7 @@ public class ValidateSuspiciousTransactionUseCase {
                         : TransactionStatusEnum.APPROVED)
                 .build();
 
-        return kafkaProducer.sendMessage(transactionEventOutbound, "payment.transaction.status")
+        return eventBrokerProducerRepository.sendMessage(transactionEventOutbound, "payment.transaction.status")
                 .doOnError(e -> log.error("Error al enviar: {}", e.getMessage()))
                 .then();
     }
