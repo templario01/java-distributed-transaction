@@ -49,14 +49,12 @@ class UpdateValidatedTransactionUseCaseTest {
     void shouldUpdateStatusWhenTransactionExists() {
         when(transactionRepository.findByTransactionExternalId(eventData.getTransactionExternalId()))
                 .thenReturn(Mono.just(mockTransaction));
-
         when(transactionRepository.save(any(TransactionEntity.class)))
                 .thenReturn(Mono.just(mockTransaction));
 
         StepVerifier.create(useCase.execute(eventData))
                 .expectSubscription()
-                .verifyComplete(); // Esperamos que termine sin errores (Mono<Void>)
-
+                .verifyComplete();
         verify(transactionRepository, times(1)).findByTransactionExternalId(any());
         verify(transactionRepository, times(1)).save(argThat(t ->
                 t.getTransactionStatus() == TransactionStatusEnum.APPROVED
@@ -70,7 +68,6 @@ class UpdateValidatedTransactionUseCaseTest {
 
         StepVerifier.create(useCase.execute(eventData))
                 .verifyComplete();
-
         verify(transactionRepository, never()).save(any());
     }
 }
