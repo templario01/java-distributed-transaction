@@ -49,7 +49,6 @@ public class CreateTransactionUseCase {
 
     private TransactionResponseDto mapToResponseDto(TransactionEntity savedTransaction) {
         return TransactionResponseDto.builder()
-                .id(savedTransaction.getId())
                 .transactionExternalId(savedTransaction.getTransactionExternalId())
                 .accountExternalIdDebit(savedTransaction.getAccountExternalIdDebit())
                 .accountExternalIdCredit(savedTransaction.getAccountExternalIdCredit())

@@ -15,8 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 public class TransactionResponseDto {
-    private Long id;
-
     private UUID transactionExternalId;
 
     private String accountExternalIdDebit;
