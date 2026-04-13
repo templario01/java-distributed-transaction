@@ -16,7 +16,6 @@ import templario01.io.transaction.domain.repository.EventBrokerProducerRepositor
 import templario01.io.transaction.domain.repository.TransactionRepository;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
