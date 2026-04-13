@@ -15,8 +15,6 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 import templario01.io.transaction.adapter.input.web.dto.TransactionRequestDto;
 
-import java.util.UUID;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @Testcontainers
@@ -40,8 +38,8 @@ class CreateTransactionIntegrationTest {
     @Test
     void shouldCreateTransactionSuccessfully() {
         TransactionRequestDto request = TransactionRequestDto.builder()
-                .accountExternalIdCredit(UUID.randomUUID().toString())
-                .accountExternalIdDebit(UUID.randomUUID().toString())
+                .accountExternalIdCredit("e046bafe-caeb-4160-a7f1-b40baf054bec")
+                .accountExternalIdDebit("ea6ab250-ebc5-4adc-a13b-4cc15c6cc589")
                 .transferTypeId(3)
                 .value(100.0)
                 .build();
@@ -52,13 +50,16 @@ class CreateTransactionIntegrationTest {
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
-                .jsonPath("$.transferTypeId").isEqualTo(request.getTransferTypeId())
-                .jsonPath("$.accountExternalIdCredit").isEqualTo(request.getAccountExternalIdCredit())
-                .jsonPath("$.accountExternalIdDebit").isEqualTo(request.getAccountExternalIdDebit())
-                .jsonPath("$.value").isEqualTo(request.getValue())
+                .json("""
+                            {
+                                "accountExternalIdDebit": "ea6ab250-ebc5-4adc-a13b-4cc15c6cc589",
+                                "accountExternalIdCredit": "e046bafe-caeb-4160-a7f1-b40baf054bec",
+                                "transferTypeId": 3,
+                                "value": 100.0,
+                                "transactionStatus": "PENDING"
+                            }
+                        """)
                 .jsonPath("$.transactionExternalId").exists()
-                .jsonPath("$.createdAt").exists()
-                .jsonPath("$.transactionStatus").isEqualTo("PENDING");
-
+                .jsonPath("$.createdAt").exists();
     }
 }
