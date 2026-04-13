@@ -62,4 +62,34 @@ class CreateTransactionIntegrationTest {
                 .jsonPath("$.transactionExternalId").exists()
                 .jsonPath("$.createdAt").exists();
     }
+
+    @Test
+    void shouldReturn400WhenRequestBodyIsInvalid() {
+        TransactionRequestDto request = TransactionRequestDto.builder()
+                .accountExternalIdCredit("e046bafe-caeb-4160-a7f1-b40baf054bec")
+                .accountExternalIdDebit("ea6ab250-ebc5-4adc-a13b-4cc15c6cc589")
+                .transferTypeId(3)
+                .value(-1.0)
+                .build();
+
+        webTestClient.post()
+                .uri("/transaction")
+                .bodyValue(request)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .json("""
+                            {
+                                "error": "Bad Request",
+                                "errors": [
+                                    {
+                                        "field":"value",
+                                        "defaultMessage": "Value must be positive",
+                                        "rejectedValue": -1.0
+                                    }
+                                ],
+                                "status": 400
+                            }
+                        """);
+    }
 }
