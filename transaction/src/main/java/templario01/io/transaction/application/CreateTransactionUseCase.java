@@ -14,6 +14,7 @@ import templario01.io.transaction.domain.repository.EventBrokerProducerRepositor
 import templario01.io.transaction.domain.repository.TransactionRepository;
 
 import java.util.UUID;
+import java.util.Date;
 
 @RequiredArgsConstructor
 @Service

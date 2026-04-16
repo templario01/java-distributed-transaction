@@ -3,6 +3,7 @@ package templario01.io.transaction.adapter.input.web;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import templario01.io.transaction.adapter.input.web.dto.TransactionRequestDto;
 import templario01.io.transaction.adapter.input.web.dto.TransactionResponseDto;
 import templario01.io.transaction.application.CreateTransactionUseCase;
 import templario01.io.transaction.application.FindTransactionUseCase;
+
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/transaction")
@@ -27,7 +30,11 @@ public class TransactionController {
     @GetMapping("/{transactionExternalId}")
     public Mono<ResponseEntity<TransactionResponseDto>> getTransaction(@PathVariable() String transactionExternalId) {
         return this.findTransactionUseCase.execute(java.util.UUID.fromString(transactionExternalId))
-                .map(response -> ResponseEntity.status(HttpStatus.OK).body(response));
+                .map(response -> ResponseEntity.status(HttpStatus.OK)
+                        .cacheControl(CacheControl
+                                .maxAge(5, TimeUnit.MINUTES)
+                                .cachePrivate())
+                        .body(response));
     }
 
     @PostMapping

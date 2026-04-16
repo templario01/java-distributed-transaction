@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: authentication
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:auth_db}
+    username: postgres
+    password: root
+jwt:
+  secret: "tHLkq8INxZ6YXYOMHF7t+288sZNA6AVR1hN3b9VZtNE="
+  expiration: 3600000
