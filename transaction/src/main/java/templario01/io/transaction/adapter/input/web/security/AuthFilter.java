@@ -47,7 +47,6 @@ public class AuthFilter implements WebFilter {
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        // Creamos el body tal cual lo pediste
         String body = String.format("{\"message\": \"%s\", \"status\": 401}", "Invalid or missing token");
 
         DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
