@@ -30,7 +30,7 @@ public class AuditLogMiddleware implements WebFilter {
         return chain.filter(exchange)
                 .timeout(Duration.ofSeconds(10))
                 .onErrorResume(java.util.concurrent.TimeoutException.class, e -> {
-                    log.error("Request Ending with timeout error - AccountId: {} | Action: [{}] {}", accountId, method, path);
+                    log.error("Request Ending with timeout error");
                     exchange.getResponse().setStatusCode(HttpStatus.GATEWAY_TIMEOUT);
                     return exchange.getResponse().setComplete();
                 });
