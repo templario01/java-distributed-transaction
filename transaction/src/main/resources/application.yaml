@@ -32,6 +32,9 @@ spring:
     properties:
       security.protocol: PLAINTEXT
 
+jwt:
+  secret: "tHLkq8INxZ6YXYOMHF7t+288sZNA6AVR1hN3b9VZtNE="
+
 app:
   kafka:
     transfer-topic: "payment.transaction"
